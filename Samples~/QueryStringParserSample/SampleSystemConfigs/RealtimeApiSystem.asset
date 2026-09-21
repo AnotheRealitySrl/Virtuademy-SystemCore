@@ -18,7 +18,7 @@ MonoBehaviour:
     credential:
       appId: C8232CDC-5788-4559-906F-F4CE93F7786B
       appSecret: trMA^frkCAIhn66U^IgqtG&X
-    apiBaseUrl: reflectisrealtime-api-sandbox.anothereality.io
+    apiBaseUrl: realtime-api-sandbox.virtuademy.io
     apiVersion: 1
   checkIsAlive: 1
   getApiInfo: 1
