@@ -152,7 +152,7 @@ namespace Virtuademy.SDK.Core.CharacterController
                 // SetActive(false) is synchronous: stops Update on every
                 // MonoBehaviour in the CC hierarchy this frame. Without
                 // this, end-of-frame Destroy() leaves one tick where
-                // components like ReflectisCamera3D.Update dereference
+                // components like VirtuademyCamera3D.Update dereference
                 // transforms that have already been marked destroyed by
                 // the avatar/networking teardown earlier in Unload, NRE'ing.
                 CharacterControllerInstance.gameObject.SetActive(false);
@@ -175,7 +175,7 @@ namespace Virtuademy.SDK.Core.CharacterController
         /// Soft scene teardown of the CC: disables the GameObject so its
         /// Update/Physics stop, but keeps <see cref="CharacterControllerInstance"/>
         /// and any subsystem-cached references (e.g. CharacterControllerProSystem's
-        /// reflectisCinemachine / cinemachineBrain) intact. The next
+        /// virtuademyCinemachine / cinemachineBrain) intact. The next
         /// <see cref="EnsureInstance"/> call is a no-op except for reactivating
         /// the GameObject — much cheaper and safer than the full
         /// Destroy/Recreate cycle, which would tear down the cinemachine sub-

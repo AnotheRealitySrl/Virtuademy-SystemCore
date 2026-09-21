@@ -3180,7 +3180,7 @@ MonoBehaviour:
   experienceData: {fileID: 639696979}
   sessionData: {fileID: 1019385954}
   websocket: {fileID: 1034225479}
-  encryptionPassword: Reflectis2024
+  encryptionPassword: SamplePassword
   experienceKey: sample
   sampleExperienceJoin:
     verb: 1

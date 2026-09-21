@@ -63,7 +63,7 @@ namespace Virtuademy.SDK.Core.Avatars
 
         private int avatarMeshDisablerCounter;
         /// <summary>
-        /// Counter that is increased each time a Reflectis component needs to hide
+        /// Counter that is increased each time a Virtuademy component needs to hide
         /// non-local-player avatars. When the counter value is higher than 0, the 
         /// avatars are hidden (they become invisible to the local player but they
         /// are still in the scene).

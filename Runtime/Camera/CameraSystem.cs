@@ -189,7 +189,7 @@ namespace Virtuademy.SDK.Core.Cameras
         {
             // Default: pick the root whose hierarchy contains a Camera component.
             // Subclasses override to match a more specific marker (e.g. a
-            // Reflectis_CinemachineManager root).
+            // Virtuademy_CinemachineManager root).
             foreach (GameObject root in roots)
             {
                 if (root == null) continue;

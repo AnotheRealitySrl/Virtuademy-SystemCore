@@ -66,7 +66,7 @@ namespace Virtuademy.SDK.Core.Cameras
         /// <summary>
         /// Bind the camera to a follow target (e.g. the CC's HeadReference).
         /// Concrete implementations route this into their tracking machinery
-        /// (Cinemachine virtual camera targets, ReflectisCamera3D distance
+        /// (Cinemachine virtual camera targets, VirtuademyCamera3D distance
         /// target, etc).
         /// </summary>
         void Bind(Transform followTarget);

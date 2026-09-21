@@ -3,7 +3,7 @@
   "displayName": "Virtuademy-SystemCore",
   "version": "16.0.0",
   "unity": "2020.1",
-  "description": "Reflectis SDK",
+  "description": "The Virtuademy application framework: SM and the system framework, the UI kit, and the foundation below. Not installed by creators.",
   "dependencies": {
     "com.anotherealitysrl.spacs-utility": "1.0.0",
     "com.anotherealitysrl.virtuademy-sdk-core": "0.3.0",

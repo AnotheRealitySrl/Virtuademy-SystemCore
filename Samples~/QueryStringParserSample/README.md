@@ -10,16 +10,16 @@ Esso fornisce il metodo ParseUrlParameters(), che restituisce un dizionario <str
 
 QuerystringParserSample è lo script specifico di questo esempio, che si occupa di tradurre il dizionario ottenuto da BrowserUrlParser
 e utilizzare i dati contenuti in esso. Può essere usato anche in altre applicazioni esterne senza apportare modifiche.
-Che parametri servono all'applicazione esterna per funzionare correttamente dentro Reflectis?
+Che parametri servono all'applicazione esterna per funzionare correttamente dentro Virtuademy?
 
 - authSessionHash: è l'hash di sessione che serve per identificare l'utente
   e fare le chiamate HMAC della profile api per ottenere i token delle altre api.
 - worldId: id del mondo, serve perchè le metriche di esperienza e presenza sono indicizzate per mondo.
 - experienceId: l'applicazione esterna deve creare una sessione single player associata all'esperienza
-  che viene passata da Reflectis, successivamente connettersi al websocket.
+  che viene passata da Virtuademy, successivamente connettersi al websocket.
   La combinazione di id del mondo e sessione permette di fare le chiamate alle api delle analitiche.
 
-Per salvare un'analitica di esperienza, è necessario chiamare l'endpoint della ReflectisAPI `CreateExperienceAnalytic(ExperienceAnalyticDTO analytic)`
+Per salvare un'analitica di esperienza, è necessario chiamare l'endpoint della Application API `CreateExperienceAnalytic(ExperienceAnalyticDTO analytic)`
 
 experienceAnalytics è un oggetto di tipo `ExperienceAnalyticDTO` strutturato come segue:
 

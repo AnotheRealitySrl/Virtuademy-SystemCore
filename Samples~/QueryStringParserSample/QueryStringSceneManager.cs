@@ -34,7 +34,7 @@ public class QueryStringSceneManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI websocket;
 
     [Header("Sample analytics")]
-    [SerializeField] private string encryptionPassword = "Reflectis2024";
+    [SerializeField] private string encryptionPassword = "SamplePassword";
     [SerializeField] private string experienceKey = "sample";
 
     [SerializeField] private ExperienceJoinDTO sampleExperienceJoin;
@@ -114,7 +114,7 @@ public class QueryStringSceneManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Test method to send an analytic to Reflectis API.
+    /// Test method to send an analytic to Virtuademy API.
     /// </summary>
     public async void SendAnalytic()
     {
