@@ -156,7 +156,7 @@ namespace Virtuademy.SDK.Core.ApplicationManagement.Samples
         {
             // Connect to the realtime api to ping user presence in the created session
             RealtimeApiClient realtimeApiSystem = RealtimeApiClient.Current;
-            realtimeApiSystem.ConnectToReflectisRealtime(
+            realtimeApiSystem.ConnectToRealtime(
                 (handshake) =>
                 {
                     Debug.Log($"{nameof(QueryStringParserSample)}: successfully created websocket connection, client id: {handshake.ConnectionId}");
