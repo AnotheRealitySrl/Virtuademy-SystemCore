@@ -2,7 +2,7 @@
 
 ## How to install
 
-Import from Git URL using Unity Package Manager: `https://github.com/AnotheRealitySrl/Reflectis-SDK-Core.git` (the repository still carries the pre-rename name; it becomes `Virtuademy-SystemCore` with the remote rename)
+Import from Git URL using Unity Package Manager: `https://github.com/AnotheRealitySrl/Virtuademy-SystemCore.git` (the repository still carries the pre-rename name; it becomes `Virtuademy-SystemCore` with the remote rename)
 
 Alternatively, if you need to modify the content of the package, import it as a submodule under the `Packages` folder.
 
