@@ -17,7 +17,7 @@ MonoBehaviour:
   apiConfig:
     credential:
       appId: C8232CDC-5788-4559-906F-F4CE93F7786B
-      appSecret: trMA^frkCAIhn66U^IgqtG&X
+      appSecret: 
     apiBaseUrl: https://application-api-sandbox.virtuademy.io
     apiVersion: 2
   checkIsAlive: 1
