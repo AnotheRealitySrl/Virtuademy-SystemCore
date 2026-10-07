@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace Virtuademy.SDK.Core
 {
-    public class InputSettingsMono : MonoBehaviour
-    {
-        public InputSettings settings;
-    }
-
+    /// <summary>
+    /// The input settings the character controller works with. A world declares its own through
+    /// the creator-facing <c>InputSettingsMono</c> in Virtuademy-SDK-Environments, which carries a
+    /// copy of this class; the application copies those values into this one when the world loads.
+    /// Keep the two field sets identical.
+    /// </summary>
     [Serializable]
     public class InputSettings
-    {        
-        //TODO FARE TUTTO IN EDITOR SCRIPTING FATTO BENE!!!!
+    {
         [Header("Movement")]
         public bool EnableWASDInteraction;
         public bool EnableArrowInteraction;

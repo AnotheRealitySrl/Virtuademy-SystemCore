@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Removed
+- `InputSettingsMono` moved to `Virtuademy-SDK-Environments` (with its GUID), where creators can
+  reach it. `InputSettings` stays here, in `InputSettings.cs`, for the character controller; the
+  application copies the world's values into it.
+
 ### Fixed
 - The URP Volume fading sample did not compile: it imported `Virtuademy.SDK.Utilities`, which no
   longer exists, could not see `IFadeManager` after the namespace rename, and did not implement
