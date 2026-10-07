@@ -1,12 +1,12 @@
-using Virtuademy.SDK.Utilities;
+using Virtuademy.SDK.Core.Fade;
 
+using System;
 using System.Collections;
 
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-
 
 using SPACS.Utilities;
 
@@ -19,6 +19,7 @@ namespace Virtuademy.SDK.Fade.Samples
         [Header("Configuration")]
         [SerializeField] private Volume fadeVolume;
         [SerializeField] private Volume desaturateVolume;
+        [SerializeField] private Volume backgroundVolume;
 
         #endregion
 
@@ -26,6 +27,7 @@ namespace Virtuademy.SDK.Fade.Samples
 
         private Coroutine blackCoroutine = null;
         private Coroutine desaturatedCoroutine = null;
+        private Coroutine backgroundCoroutine = null;
 
         #endregion
 
@@ -50,6 +52,33 @@ namespace Virtuademy.SDK.Fade.Samples
             if (FadeOnStart)
             {
                 FadeFromBlack();
+            }
+        }
+
+        public void FadeToBackground(Action onEnd = null)
+        {
+            if (backgroundVolume != null)
+            {
+                if (backgroundCoroutine != null)
+                    StopCoroutine(backgroundCoroutine);
+
+                LayerManager.MoveObjectsToLayer();
+                backgroundCoroutine = StartCoroutine(FadeVolumeWeight(backgroundVolume, backgroundVolume.weight, 1, FadeTime * (1f - fadeVolume.weight), onEnd));
+            }
+        }
+
+        public void FadeFromBackground(Action onEnd = null)
+        {
+            if (backgroundVolume != null)
+            {
+                if (backgroundCoroutine != null)
+                    StopCoroutine(backgroundCoroutine);
+
+                backgroundCoroutine = StartCoroutine(FadeVolumeWeight(backgroundVolume, backgroundVolume.weight, 0, FadeTime * backgroundVolume.weight, () =>
+                {
+                    onEnd?.Invoke();
+                    LayerManager.ResetObjectsLayer();
+                }));
             }
         }
 
@@ -115,6 +144,9 @@ namespace Virtuademy.SDK.Fade.Samples
             if (desaturatedCoroutine != null)
                 StopCoroutine(desaturatedCoroutine);
 
+            if (backgroundCoroutine != null)
+                StopCoroutine(backgroundCoroutine);
+
             StopAllCoroutines();
         }
         #endregion
@@ -137,6 +169,10 @@ namespace Virtuademy.SDK.Fade.Samples
             yield return null;
         }
 
+        public void SetTargetCamera(Camera camera)
+        {
+
+        }
 
         #endregion
     }

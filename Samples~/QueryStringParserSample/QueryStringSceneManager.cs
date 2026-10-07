@@ -178,6 +178,6 @@ public class QueryStringSceneManager : MonoBehaviour
 
     private string GenerateUniqueKey(string key)
     {
-        return $"{DateTime.UtcNow:yyyyMMddHHmmssfff}{sessionId:00000}{StringExtensions.GenerateRandomAlphanumericString(8)}{key}".EncryptDecriptXOR(encryptionPassword);
+        return $"{DateTime.UtcNow:yyyyMMddHHmmssfff}{sessionId:00000}{SPACS.Utilities.StringExtensions.GenerateRandomAlphanumericString(8)}{key}".EncryptDecriptXOR(encryptionPassword);
     }
 }

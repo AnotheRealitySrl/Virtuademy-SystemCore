@@ -1,5 +1,19 @@
 # Release notes
 
+## Unreleased
+
+### Fixed
+- The URP Volume fading sample did not compile: it imported `Virtuademy.SDK.Utilities`, which no
+  longer exists, could not see `IFadeManager` after the namespace rename, and did not implement
+  `FadeToBackground`, `FadeFromBackground` and `SetTargetCamera`. It now carries the implementation
+  the application's imported copy already had.
+- The QueryStringParser sample named `StringExtensions` ambiguously; it now names
+  `SPACS.Utilities.StringExtensions`.
+
+### Removed
+- `HttpSystemConfig.asset` and every reference to it from the QueryStringParser sample: `HttpSystem`
+  was removed in 2026-04, so the scene's systems list opened with a missing script.
+
 ## v16.0.0
 
 ### Added

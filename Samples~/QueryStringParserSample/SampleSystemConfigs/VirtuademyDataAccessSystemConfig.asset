@@ -23,4 +23,3 @@ MonoBehaviour:
   checkIsAlive: 1
   getApiInfo: 1
   allowUntrustedServers: 0
-  httpSystem: {fileID: 11400000, guid: 583db5b473e63654e9bd3e941ce8d919, type: 2}

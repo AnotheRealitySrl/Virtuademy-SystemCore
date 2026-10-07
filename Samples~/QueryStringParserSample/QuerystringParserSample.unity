@@ -3152,7 +3152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Virtuademy.SystemCore::Virtuademy.SDK.Core.SystemFramework.SystemsManagerController
   loadOnAwake: 1
   systems:
-  - {fileID: 11400000, guid: 583db5b473e63654e9bd3e941ce8d919, type: 2}
   - {fileID: 11400000, guid: 45ecbd6be8eaaca4b89afd0a5a9a0f8f, type: 2}
   - {fileID: 11400000, guid: f45644386881c9549802a09ea4370a46, type: 2}
   - {fileID: 11400000, guid: 986f0f3eae50e5b4fa4ac64d8909b278, type: 2}
