@@ -3,6 +3,10 @@
 ## Unreleased
 
 ### Removed
+- The drawers of the SPACS-Utility inspector attributes (`OnChangedCall`, `HelpBox`, `DrawIf`,
+  `FoldableGroup`, `Indent`) and of `SerializedType<>` moved to SPACS-Utility with their GUIDs, next
+  to the attributes, so they also work in creator projects. `InspectorButton` stays: its attribute
+  is declared here.
 - `InputSettingsMono` moved to `Virtuademy-SDK-Environments` (with its GUID), where creators can
   reach it. `InputSettings` stays here, in `InputSettings.cs`, for the character controller; the
   application copies the world's values into it.
