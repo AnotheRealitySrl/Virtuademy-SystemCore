@@ -1,5 +1,23 @@
 # Release notes
 
+## Unreleased
+
+Major bump: `SM.LoadAndSetup` returns `Task` instead of `void` (source-compatible for callers that
+ignore it, binary-breaking).
+
+### Fixed
+- **One system that threw stopped the boot.** `SM.LoadAndSetup` was `async void`: an exception in a
+  system's `Init` ended the sequence where it was, `SM.IsReady` never became true and every
+  `DoOnceWhenReady` callback waited forever. Each system's initialization is now contained: the
+  failure is logged, the systems after it are still set up, and readiness is always signalled.
+- **Concurrent avatar loads destroyed each other's loader.** `AvatarLoadersController.LoadAvatar`
+  destroyed the shared `currentLoader` field in its `finally`, which by then could be another
+  load's loader. Each load now destroys its own.
+
+### Added
+- `SM.FailedSystems` and `SM.OnSystemSetupFailed`: which systems failed during the last setup
+  (their subsystems are skipped).
+
 ## v17.0.0
 
 ### Removed
