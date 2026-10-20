@@ -31,7 +31,8 @@ namespace Virtuademy.SDK.Core.SystemFramework
 
         public void LoadAndSetup()
         {
-            SM.LoadAndSetup(systems);
+            // SM.LoadAndSetup never faults: failures are reported through SM.FailedSystems.
+            _ = SM.LoadAndSetup(systems);
         }
     }
 }

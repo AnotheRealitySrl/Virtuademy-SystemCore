@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,6 +22,23 @@ namespace Virtuademy.SDK.Core.SystemFramework
         public static UnityEvent OnAllSystemsSetupsDone = new UnityEvent();
 
         public static bool IsReady { get; private set; } = false;
+
+        /// <summary>
+        /// The systems whose initialization threw during the last <see cref="LoadAndSetup"/>,
+        /// with their subsystems, which were not initialized. Empty when every system came up.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="IsReady"/> still becomes true when this is not empty: the setup has finished,
+        /// and whoever waits for it (<see cref="DoOnceWhenReady"/>) must be told so. Until
+        /// 2026-10 one throwing system stopped the sequence where it was, readiness never came,
+        /// and the boot hung with only the exception in the log to say why.
+        /// </remarks>
+        public static IReadOnlyList<ISystem> FailedSystems => failedSystems;
+
+        /// <summary>A system's initialization threw. Raised once per failed system, before readiness.</summary>
+        public static UnityEvent<ISystem, Exception> OnSystemSetupFailed = new UnityEvent<ISystem, Exception>();
+
+        private static readonly List<ISystem> failedSystems = new();
 
         public static void DoOnceWhenReady(UnityAction callback)
         {
@@ -52,29 +70,44 @@ namespace Virtuademy.SDK.Core.SystemFramework
         /// Instantiated (if required) and initializes a list of systems
         /// </summary>
         /// <param name="systems"></param>
-        public static async void LoadAndSetup(List<BaseSystem> systems)
+        /// <returns>
+        /// Completes when every system has been set up, and never faults: a system that throws is
+        /// logged, listed in <see cref="FailedSystems"/> and reported through
+        /// <see cref="OnSystemSetupFailed"/>, and the systems after it are still set up.
+        /// </returns>
+        public static async Task LoadAndSetup(List<BaseSystem> systems)
         {
             IsReady = false;
+            failedSystems.Clear();
 
             CurrentSystems = new List<ISystem>();
-            for (int i = 0; i < systems.Count; i++)
+            try
             {
-                BaseSystem system = systems[i];
-                if (system != null)
+                for (int i = 0; i < systems.Count; i++)
                 {
-
-                    BaseSystem systemInstance = system.RequiresNewInstance ? ScriptableObject.Instantiate(system) : system;
-                    CurrentSystems.Add(systemInstance);
-                    if (system.AutoInitAtStartup)
+                    BaseSystem system = systems[i];
+                    if (system != null)
                     {
-                        _ = await InitSystem(systemInstance, null);
+
+                        BaseSystem systemInstance = system.RequiresNewInstance ? ScriptableObject.Instantiate(system) : system;
+                        CurrentSystems.Add(systemInstance);
+                        if (system.AutoInitAtStartup)
+                        {
+                            _ = await InitSystem(systemInstance, null);
+                        }
+                    }
+                    else
+                    {
+                        // Warning! The system in position [i] is not valid!
+                        Debug.LogWarning($"[SystemManager] System not valid in SystemManagerController, index [{i}].");
                     }
                 }
-                else
-                {
-                    // Warning! The system in position [i] is not valid!
-                    Debug.LogWarning($"[SystemManager] System not valid in SystemManagerController, index [{i}].");
-                }
+            }
+            catch (Exception e)
+            {
+                // InitSystem contains each system's own failure; this is for the loop itself
+                // (an Instantiate that throws), which must not cost the readiness signal either.
+                Debug.LogException(e);
             }
 
             //while (CurrentSystems.Exists(x => x.AutoInitAtStartup && !x.IsInit))
@@ -82,6 +115,12 @@ namespace Virtuademy.SDK.Core.SystemFramework
             //    Debug.Log($"System {string.Join("", CurrentSystems.Where(x => x.AutoInitAtStartup && !x.IsInit).Select(x => "|" + x.ToString() + "|").ToList())} not initialized yet");
             //    await Task.Yield();
             //}
+
+            if (failedSystems.Count > 0)
+            {
+                Debug.LogError($"[SystemManager] {failedSystems.Count} system(s) failed to initialize: "
+                               + string.Join(", ", failedSystems));
+            }
 
             IsReady = true;
 
@@ -96,14 +135,35 @@ namespace Virtuademy.SDK.Core.SystemFramework
         /// <returns></returns>
         private static async Task<ISystem> InitSystem(ISystem systemToInitialize, ISystem parentSystem)
         {
-            await systemToInitialize.InitInternal(parentSystem);
+            try
+            {
+                await systemToInitialize.InitInternal(parentSystem);
+            }
+            catch (Exception e)
+            {
+                // Its subsystems are skipped: they are initialized with this one as their parent.
+                Debug.LogError($"[SystemManager] {systemToInitialize} failed to initialize; its subsystems are skipped.",
+                               systemToInitialize as UnityEngine.Object);
+                Debug.LogException(e, systemToInitialize as UnityEngine.Object);
+                failedSystems.Add(systemToInitialize);
+                try
+                {
+                    OnSystemSetupFailed?.Invoke(systemToInitialize, e);
+                }
+                catch (Exception listenerException)
+                {
+                    Debug.LogException(listenerException);
+                }
+                return systemToInitialize;
+            }
+
             foreach (ISystem subSystem in systemToInitialize.SubSystems)
             {
                 //if (subSystem.AutoInitAtStartup)
                 //{
                 if (subSystem == null)
                 {
-                    Debug.LogError("Found null subsystem inside system: " + systemToInitialize, systemToInitialize as Object);
+                    Debug.LogError("Found null subsystem inside system: " + systemToInitialize, systemToInitialize as UnityEngine.Object);
                     continue;
                 }
                 BaseSystem systemInstance = subSystem.RequiresNewInstance ? ScriptableObject.Instantiate(subSystem as BaseSystem) : subSystem as BaseSystem;

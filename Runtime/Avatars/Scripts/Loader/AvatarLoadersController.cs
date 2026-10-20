@@ -29,10 +29,14 @@ namespace Virtuademy.SDK.Core.Avatars
             {
                 if (avatarLoader.CheckAvatarConfig(config))
                 {
-                    currentLoader = Instantiate(avatarLoader);
+                    // Each load owns its loader. The shared field only says which one reports
+                    // progress: destroying through it, as this did, made a load that finished
+                    // first destroy the loader of another one still running.
+                    AvatarLoaderBase loader = Instantiate(avatarLoader);
+                    currentLoader = loader;
                     try
                     {
-                        AvatarData avatarData = await currentLoader.LoadAvatar(config);
+                        AvatarData avatarData = await loader.LoadAvatar(config);
                         return avatarData;
                     }
                     catch (Exception e)
@@ -42,7 +46,11 @@ namespace Virtuademy.SDK.Core.Avatars
                     }
                     finally
                     {
-                        Destroy(currentLoader);
+                        if (currentLoader == loader)
+                        {
+                            currentLoader = null;
+                        }
+                        Destroy(loader);
                     }
                 }
             }
